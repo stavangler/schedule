@@ -1,0 +1,54 @@
+QUERY MODEL, todo
+trip id, date and speaker
+
+RESULT, todo
+[
+    {
+        "date": "2018-04-12",
+        "title": "Velkommen",
+        "description": "Beskriv det du trenger, få det du forventer!",
+        "tags": [
+            "dev",
+            "lecture"
+        ],
+        "speakers": [
+            {
+                "name": "Frode",
+                "href": "some uri"
+            }
+        ],
+        "room": "Van Gogh 2",
+        "start": "09:00",
+        "end": "09:15",
+        "duration": "15:00"
+    }
+]
+
+-----------------------------------------------------------------------------
+DB TESTING..
+
+-- Creates days table
+CREATE TABLE IF NOT EXISTS days (
+    id INT NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY
+	, date date NOT NULL
+    , title varchar(50) NOT NULL
+    , description varchar(500) NOT NULL
+    , room varchar(50) NOT NULL
+	, starttime timestamp NOT NULL
+	, endtime timestamp NOT NULL
+    , year smallint NULL
+    , color varchar(50) NULL
+);
+
+-- Creates days table
+CREATE TABLE IF NOT EXISTS speakers (
+    id INT NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY
+    , name varchar(50) NOT NULL
+	, href varchar(500) NOT NULL
+);
+
+-- Creates tags table
+CREATE TABLE IF NOT EXISTS tags (
+    id INT NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY
+    , title varchar(50) NOT NULL
+);
