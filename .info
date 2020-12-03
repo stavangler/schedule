@@ -25,30 +25,109 @@ RESULT, todo
 ]
 
 -----------------------------------------------------------------------------
-DB TESTING..
 
--- Creates days table
-CREATE TABLE IF NOT EXISTS days (
-    id INT NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY
-	, date date NOT NULL
-    , title varchar(50) NOT NULL
-    , description varchar(500) NOT NULL
-    , room varchar(50) NOT NULL
-	, starttime timestamp NOT NULL
-	, endtime timestamp NOT NULL
-    , year smallint NULL
-    , color varchar(50) NULL
-);
+create prisma client:
+    1. npx prisma introspect
+    2. npx prisma generate
 
--- Creates days table
-CREATE TABLE IF NOT EXISTS speakers (
-    id INT NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY
-    , name varchar(50) NOT NULL
-	, href varchar(500) NOT NULL
-);
 
--- Creates tags table
-CREATE TABLE IF NOT EXISTS tags (
-    id INT NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY
-    , title varchar(50) NOT NULL
-);
+DB fields:
+    entries
+        date
+        title
+        description
+        tag
+        speaker
+        room
+        starttime
+        endtime
+    speakers
+        name
+        url
+    tags
+        title
+
+
+
+-- Table: public.entries
+
+-- DROP TABLE public.entries;
+
+CREATE TABLE public.entries
+(
+    id integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
+    date date NOT NULL,
+    title character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    description character varying(500) COLLATE pg_catalog."default" NOT NULL,
+    room character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    starttime timestamp without time zone NOT NULL,
+    endtime timestamp without time zone NOT NULL,
+    year smallint,
+    speakers_id integer,
+    tags_id integer,
+    CONSTRAINT entries_pkey PRIMARY KEY (id),
+    CONSTRAINT fk_speaker FOREIGN KEY (speakers_id)
+        REFERENCES public.speakers (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT fk_tag FOREIGN KEY (tags_id)
+        REFERENCES public.tags (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE public.entries
+    OWNER to postgres;
+
+GRANT ALL ON TABLE public.entries TO admin;
+
+GRANT ALL ON TABLE public.entries TO postgres;
+
+
+
+-- Table: public.speakers
+
+-- DROP TABLE public.speakers;
+
+CREATE TABLE public.speakers
+(
+    id integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
+    name character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    href character varying(500) COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT speakers_pkey PRIMARY KEY (id)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE public.speakers
+    OWNER to postgres;
+
+GRANT ALL ON TABLE public.speakers TO admin;
+
+GRANT ALL ON TABLE public.speakers TO postgres;
+
+
+
+-- Table: public.tags
+
+-- DROP TABLE public.tags;
+
+CREATE TABLE public.tags
+(
+    id integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
+    title character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT tags_pkey PRIMARY KEY (id)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE public.tags
+    OWNER to postgres;
+
+GRANT ALL ON TABLE public.tags TO admin;
+
+GRANT ALL ON TABLE public.tags TO postgres;
+
+

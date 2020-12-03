@@ -1,0 +1,36 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+model entries {
+  id          Int       @id @default(autoincrement())
+  date        DateTime
+  title       String
+  description String
+  room        String
+  starttime   DateTime
+  endtime     DateTime
+  year        Int?
+  speakers_id Int?
+  tags_id     Int?
+  speakers    speakers? @relation(fields: [speakers_id], references: [id])
+  tags        tags?     @relation(fields: [tags_id], references: [id])
+}
+
+model speakers {
+  id      Int       @id @default(autoincrement())
+  name    String
+  href    String
+  entries entries[]
+}
+
+model tags {
+  id      Int       @id @default(autoincrement())
+  title   String
+  entries entries[]
+}
