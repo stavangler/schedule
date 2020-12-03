@@ -62,15 +62,14 @@ CREATE TABLE public.entries
     room character varying(50) COLLATE pg_catalog."default" NOT NULL,
     starttime timestamp without time zone NOT NULL,
     endtime timestamp without time zone NOT NULL,
-    year smallint,
-    speakers_id integer,
-    tags_id integer,
+    speaker_id integer,
+    tag_id integer,
     CONSTRAINT entries_pkey PRIMARY KEY (id),
-    CONSTRAINT fk_speaker FOREIGN KEY (speakers_id)
+    CONSTRAINT fk_speaker FOREIGN KEY (speaker_id)
         REFERENCES public.speakers (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION,
-    CONSTRAINT fk_tag FOREIGN KEY (tags_id)
+    CONSTRAINT fk_tag FOREIGN KEY (tag_id)
         REFERENCES public.tags (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
