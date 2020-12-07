@@ -49,6 +49,28 @@ DB fields:
 
 
 
+-- Table: public.trips
+
+-- DROP TABLE public.trips;
+
+CREATE TABLE public.trips
+(
+    id integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
+    title character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT trips_pkey PRIMARY KEY (id)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE public.trips
+    OWNER to postgres;
+
+GRANT ALL ON TABLE public.trips TO admin;
+
+GRANT ALL ON TABLE public.trips TO postgres;
+
+
+
 -- Table: public.entries
 
 -- DROP TABLE public.entries;
@@ -64,6 +86,7 @@ CREATE TABLE public.entries
     endtime timestamp without time zone NOT NULL,
     speaker_id integer,
     tag_id integer,
+    trip_id integer,
     CONSTRAINT entries_pkey PRIMARY KEY (id),
     CONSTRAINT fk_speaker FOREIGN KEY (speaker_id)
         REFERENCES public.speakers (id) MATCH SIMPLE
@@ -71,6 +94,10 @@ CREATE TABLE public.entries
         ON DELETE NO ACTION,
     CONSTRAINT fk_tag FOREIGN KEY (tag_id)
         REFERENCES public.tags (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT fk_trip FOREIGN KEY (trip_id)
+        REFERENCES public.trips (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
 )
@@ -130,3 +157,33 @@ GRANT ALL ON TABLE public.tags TO admin;
 GRANT ALL ON TABLE public.tags TO postgres;
 
 
+
+
+-- Table: public.tags_entries;
+
+-- DROP TABLE public.tags_entries;
+
+CREATE TABLE public.tags_entries
+(
+    id integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
+    tag_id integer,
+    entry_id integer,
+    CONSTRAINT tags_entries_pkey PRIMARY KEY (id),
+    CONSTRAINT fk_entries_id FOREIGN KEY (entry_id)
+        REFERENCES public.entries (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT fk_tag_id FOREIGN KEY (tag_id)
+        REFERENCES public.tags (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE public.tags_entries
+    OWNER to postgres;
+
+GRANT ALL ON TABLE public.tags_entries TO admin;
+
+GRANT ALL ON TABLE public.tags_entries TO postgres;

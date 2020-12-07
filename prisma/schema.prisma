@@ -1,35 +1,51 @@
 generator client {
-  provider = "prisma-client-js"
+    provider        = "prisma-client-js"
+    previewFeatures = ["nativeTypes"]
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DB_URL")
+    provider = "postgresql"
+    url      = env("DB_URL")
 }
 
 model entries {
-  id          Int       @id @default(autoincrement())
-  date        DateTime
-  title       String
-  description String
-  room        String
-  starttime   DateTime
-  endtime     DateTime
-  speaker_id  Int?
-  tag_id      Int?
-  speakers    speakers? @relation(fields: [speaker_id], references: [id])
-  tags        tags?     @relation(fields: [tag_id], references: [id])
+    id           Int            @id @default(autoincrement()) @db.Integer
+    date         DateTime       @db.Date
+    title        String         @db.VarChar(50)
+    description  String         @db.VarChar(500)
+    room         String         @db.VarChar(50)
+    starttime    DateTime       @db.Timestamp(6)
+    endtime      DateTime       @db.Timestamp(6)
+    speaker_id   Int?           @db.Integer
+    trip_id      Int?           @db.Integer
+    speaker      speakers?      @relation(fields: [speaker_id], references: [id])
+    trip         trips?         @relation(fields: [trip_id], references: [id])
+    tags_entries tags_entries[]
 }
 
 model speakers {
-  id      Int       @id @default(autoincrement())
-  name    String
-  href    String
-  entries entries[]
+    id      Int       @id @default(autoincrement()) @db.Integer
+    name    String    @db.VarChar(50)
+    href    String    @db.VarChar(500)
+    entries entries[]
 }
 
 model tags {
-  id      Int       @id @default(autoincrement())
-  title   String
-  entries entries[]
+    id           Int            @id @default(autoincrement()) @db.Integer
+    title        String         @db.VarChar(50)
+    tags_entries tags_entries[]
+}
+
+model trips {
+    id      Int       @id @default(autoincrement()) @db.Integer
+    title   String    @db.VarChar(50)
+    entries entries[]
+}
+
+model tags_entries {
+    id       Int      @id @default(autoincrement()) @db.Integer
+    tag_id   Int?     @db.Integer
+    entry_id Int?     @db.Integer
+    entry    entries? @relation(fields: [entry_id], references: [id])
+    tag      tags?    @relation(fields: [tag_id], references: [id])
 }
