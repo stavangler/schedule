@@ -6,6 +6,6 @@ export default interface DayResult {
     starttime: string
     endtime: string
     duration: string
-    speaker: string
+    speakers: string[]
     tags: string[]
 }

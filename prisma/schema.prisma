@@ -1,6 +1,6 @@
 generator client {
-    provider        = "prisma-client-js"
-    previewFeatures = ["nativeTypes"]
+    provider = "prisma-client-js"
+    //previewFeatures = ["nativeTypes"]
 }
 
 datasource db {
@@ -9,43 +9,52 @@ datasource db {
 }
 
 model entries {
-    id           Int            @id @default(autoincrement()) @db.Integer
-    date         DateTime       @db.Date
-    title        String         @db.VarChar(50)
-    description  String         @db.VarChar(500)
-    room         String         @db.VarChar(50)
-    starttime    DateTime       @db.Timestamp(6)
-    endtime      DateTime       @db.Timestamp(6)
-    speaker_id   Int?           @db.Integer
-    trip_id      Int?           @db.Integer
-    speaker      speakers?      @relation(fields: [speaker_id], references: [id])
-    trip         trips?         @relation(fields: [trip_id], references: [id])
-    tags_entries tags_entries[]
+    id               Int                @id @default(autoincrement())
+    date             DateTime
+    title            String
+    description      String
+    room             String
+    starttime        DateTime
+    endtime          DateTime
+    trip_id          Int?
+    trip             trips?             @relation(fields: [trip_id], references: [id])
+    speakers_entries speakers_entries[]
+    tags_entries     tags_entries[]
 }
 
 model speakers {
-    id      Int       @id @default(autoincrement()) @db.Integer
-    name    String    @db.VarChar(50)
-    href    String    @db.VarChar(500)
-    entries entries[]
+    id               Int                @id @default(autoincrement())
+    name             String
+    href             String
+    speakers_entries speakers_entries[]
 }
 
 model tags {
-    id           Int            @id @default(autoincrement()) @db.Integer
-    title        String         @db.VarChar(50)
+    id           Int            @id @default(autoincrement())
+    title        String
     tags_entries tags_entries[]
 }
 
 model trips {
-    id      Int       @id @default(autoincrement()) @db.Integer
-    title   String    @db.VarChar(50)
-    entries entries[]
+    id          Int       @id @default(autoincrement())
+    title       String
+    description String
+    date        DateTime
+    entries     entries[]
+}
+
+model speakers_entries {
+    id         Int       @id @default(autoincrement())
+    speaker_id Int?
+    entry_id   Int?
+    entry      entries?  @relation(fields: [entry_id], references: [id])
+    speaker    speakers? @relation(fields: [speaker_id], references: [id])
 }
 
 model tags_entries {
-    id       Int      @id @default(autoincrement()) @db.Integer
-    tag_id   Int?     @db.Integer
-    entry_id Int?     @db.Integer
+    id       Int      @id @default(autoincrement())
+    tag_id   Int?
+    entry_id Int?
     entry    entries? @relation(fields: [entry_id], references: [id])
     tag      tags?    @relation(fields: [tag_id], references: [id])
 }
