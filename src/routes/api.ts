@@ -11,7 +11,7 @@ export const register = (app: express.Application) => {
     app.post('/api/trips', async (req: any, res) => {
         execute(async () => {
             const trips = await prisma.trips.findMany()
-            console.log(trips)
+            //console.log(trips)
             res.send(trips) // test..
         }, res)
     })
@@ -24,7 +24,7 @@ export const register = (app: express.Application) => {
         execute(async () => {
             const entries = await prisma.entries.findMany({
                 where: {
-                    trip_id: q.tripId,
+                    tripId: q.tripId,
                     date: new Date(q.date)
                 },
                 include: {
@@ -35,12 +35,12 @@ export const register = (app: express.Application) => {
             })
 
             const speakers = await prisma.speakers_entries.findMany({
-                where: { entry_id: entries[0].id },
+                where: { entryId: entries[0].id },
                 include: { speaker: true },
             })
 
             const tags = await prisma.tags_entries.findMany({
-                where: { entry_id: entries[0].id },
+                where: { entryId: entries[0].id },
                 include: { tag: true },
             })
 

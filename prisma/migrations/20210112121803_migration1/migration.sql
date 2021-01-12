@@ -7,7 +7,7 @@ CREATE TABLE "entries" (
     "room" TEXT NOT NULL,
     "starttime" TIMESTAMP(3) NOT NULL,
     "endtime" TIMESTAMP(3) NOT NULL,
-    "trip_id" INTEGER,
+    "tripId" INTEGER,
 
     PRIMARY KEY ("id")
 );
@@ -34,6 +34,7 @@ CREATE TABLE "trips" (
 "id" SERIAL,
     "title" TEXT NOT NULL,
     "description" TEXT NOT NULL,
+    "imgUrl" TEXT NOT NULL,
     "date" TIMESTAMP(3) NOT NULL,
 
     PRIMARY KEY ("id")
@@ -42,8 +43,8 @@ CREATE TABLE "trips" (
 -- CreateTable
 CREATE TABLE "speakers_entries" (
 "id" SERIAL,
-    "speaker_id" INTEGER,
-    "entry_id" INTEGER,
+    "speakerId" INTEGER,
+    "entryId" INTEGER,
 
     PRIMARY KEY ("id")
 );
@@ -51,23 +52,23 @@ CREATE TABLE "speakers_entries" (
 -- CreateTable
 CREATE TABLE "tags_entries" (
 "id" SERIAL,
-    "tag_id" INTEGER,
-    "entry_id" INTEGER,
+    "tagId" INTEGER,
+    "entryId" INTEGER,
 
     PRIMARY KEY ("id")
 );
 
 -- AddForeignKey
-ALTER TABLE "entries" ADD FOREIGN KEY("trip_id")REFERENCES "trips"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "entries" ADD FOREIGN KEY("tripId")REFERENCES "trips"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "speakers_entries" ADD FOREIGN KEY("entry_id")REFERENCES "entries"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "speakers_entries" ADD FOREIGN KEY("entryId")REFERENCES "entries"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "speakers_entries" ADD FOREIGN KEY("speaker_id")REFERENCES "speakers"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "speakers_entries" ADD FOREIGN KEY("speakerId")REFERENCES "speakers"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "tags_entries" ADD FOREIGN KEY("entry_id")REFERENCES "entries"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "tags_entries" ADD FOREIGN KEY("entryId")REFERENCES "entries"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "tags_entries" ADD FOREIGN KEY("tag_id")REFERENCES "tags"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "tags_entries" ADD FOREIGN KEY("tagId")REFERENCES "tags"("id") ON DELETE SET NULL ON UPDATE CASCADE;
