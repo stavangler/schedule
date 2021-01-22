@@ -16,7 +16,7 @@ model entries {
     room             String
     starttime        DateTime
     endtime          DateTime
-    tripId          Int?
+    tripId           Int?
     trip             trips?             @relation(fields: [tripId], references: [id])
     speakers_entries speakers_entries[]
     tags_entries     tags_entries[]
@@ -45,17 +45,17 @@ model trips {
 }
 
 model speakers_entries {
-    id         Int       @id @default(autoincrement())
+    id        Int       @id @default(autoincrement())
     speakerId Int?
     entryId   Int?
-    entry      entries?  @relation(fields: [entryId], references: [id])
-    speaker    speakers? @relation(fields: [speakerId], references: [id])
+    entry     entries?  @relation(fields: [entryId], references: [id])
+    speaker   speakers? @relation(fields: [speakerId], references: [id])
 }
 
 model tags_entries {
-    id       Int      @id @default(autoincrement())
+    id      Int      @id @default(autoincrement())
     tagId   Int?
     entryId Int?
-    entry    entries? @relation(fields: [entryId], references: [id])
-    tag      tags?    @relation(fields: [tagId], references: [id])
+    entry   entries? @relation(fields: [entryId], references: [id])
+    tag     tags?    @relation(fields: [tagId], references: [id])
 }

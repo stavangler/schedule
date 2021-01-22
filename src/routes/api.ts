@@ -1,7 +1,7 @@
+import { TripResult, AgendaResult } from './../models/results'
 import * as express from 'express'
 import { PrismaClient } from '@prisma/client'
-import DayQuery from '../models/day-query'
-import DayResult from '../models/day-result'
+import * as Q from '../models/queries'
 import moment from 'moment'
 
 const prisma = new PrismaClient()
@@ -9,17 +9,40 @@ const prisma = new PrismaClient()
 export const register = (app: express.Application) => {
 
     app.post('/api/trips', async (req: any, res) => {
+        const q: Q.TripsQuery = req.body
         execute(async () => {
             const trips = await prisma.trips.findMany()
-            //console.log(trips)
-            res.send(trips) // test..
+            res.send(trips.map((t) => {
+                const result: TripResult = {
+                    id: t.id,
+                    title: t.title,
+                    description: t.description,
+                    imgUrl: t.imgUrl,
+                    date: moment.utc(t.date).format("YYYY-MM-DD"),
+                }
+                return result
+            }))
+        }, res)
+
+    })
+
+    app.post('/api/trip/details', async (req: any, res) => {
+        throw new Error('Not implemented')
+        const q: Q.TripDetailsQuery = req.body
+        execute(async () => {
+            // const details = await prisma.trips.findUnique({
+            //     where: {
+            //         id: q.tripId
+            //     }
+            // })
+            // res.send(details)
         }, res)
     })
 
-    app.post('/api/trip/day', async (req: any, res) => {
+    app.post('/api/trip/agenda', async (req: any, res) => {
 
-        const q: DayQuery = req.body
-        console.log(req.body)
+        const q: Q.AgendaQuery = req.body
+        //console.log(req.body)
 
         execute(async () => {
             const entries = await prisma.entries.findMany({
@@ -46,7 +69,8 @@ export const register = (app: express.Application) => {
 
             res.send(entries.map((e) => {
                 const dur = moment(e.endtime).diff(moment(e.starttime))
-                const result: DayResult = {
+                const result: AgendaResult = {
+                    id: e.id,
                     date: q.date,
                     title: e.title,
                     description: e.description,
