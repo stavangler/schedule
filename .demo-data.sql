@@ -45,40 +45,29 @@ VALUES
     (23, 2, '2020-04-12', 'Quis autem vel eum iure reprehenderit', 'quia dolor sit amet', 'Mercury', '2020-04-12 12:30:00', '2020-04-12 13:30:00'),
     (24, 2, '2020-04-12', 'Ut enim ad minima veniam, quis nostrum', 'At vero eos et accusamus et iusto odio', 'Mercury', '2020-04-12 14:00:00', '2020-04-12 16:00:00'),
     (25, 2, '2020-04-13', 'Maxime minus temporibus', null, null, '2020-04-13 10:00:00', '2020-04-13 12:00:00'),
-    (26, 2, '2020-04-13', 'Hjemreise til Stavanger (KL1403)', null, null, '2020-04-13 14:00:00', '2020-04-10 16:00:00'),
+    (26, 2, '2020-04-13', 'Hjemreise til Stavanger (KL1403)', null, null, '2020-04-13 14:00:00', '2020-04-10 16:00:00');
 
 -- speakers_entries
 INSERT INTO speakers_entries ("entryId", "speakerId") 
 VALUES 
-    (1, 1),
-    (2, 2),
-    (2, 3),
-    (3, 1),
     (4, 1),
-    (4, 2),
-    (4, 3),
-    (5, 3),
+    (5, 2),
     (6, 3),
-    (7, 1);
+    (7, 1),
+    (7, 2),
     (8, 2),
     (9, 1),
     (10, 1),
-    (11, 2),
-    (12, 3),
+    (10, 2),
+    (10, 3),
     (13, 3),
-    (14, 2),
-    (15, 2),
-    (16, 1),
-    (17, 3),
     (18, 3),
     (19, 2),
     (20, 1),
     (21, 3),
-    (22, 1),
     (23, 2),
     (24, 3),
-    (25, 1),
-    (26, 2),
+    (25, 1);
 
 -- tags_entries
 INSERT INTO tags_entries ("entryId", "tagId") 
@@ -86,7 +75,7 @@ VALUES
     (4, 2),
     (5, 1),
     (6, 2),
-    (7, 1);
+    (7, 1),
     (8, 2),
     (9, 1),
     (10, 2),
@@ -96,4 +85,4 @@ VALUES
     (20, 2),
     (23, 2),
     (24, 1),
-    (25, 2),
+    (25, 2);

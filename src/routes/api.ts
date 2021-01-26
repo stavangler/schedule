@@ -58,12 +58,10 @@ export const register = (app: express.Application) => {
             })
 
             const speakers = await prisma.speakers_entries.findMany({
-                where: { entryId: entries[0].id },
                 include: { speaker: true },
             })
 
             const tags = await prisma.tags_entries.findMany({
-                where: { entryId: entries[0].id },
                 include: { tag: true },
             })
 
@@ -76,11 +74,12 @@ export const register = (app: express.Application) => {
                     description: e.description,
                     room: e.room,
                     starttime: moment.utc(e.starttime).format("HH:mm"),
-                    endtime: moment.utc(e.endtime).format("HH:mm"),
-                    duration: moment.utc(dur).format("HH:mm"),
-                    speakers: speakers.map((s) => s.speaker.name),
-                    tags: tags.map((t) => t.tag.title)
+                    endtime: e.endtime ? moment.utc(e.endtime).format("HH:mm") : null,
+                    duration: e.endtime ? moment.utc(dur).format("HH:mm") : null,
+                    speakers: speakers.filter(x => x.entryId == e.id).map((s) => s.speaker.name),
+                    tags: tags.filter(x => x.entryId == e.id).map((t) => t.tag.title)
                 }
+                // console.log(result)
                 return result
             }))
         }, res)
